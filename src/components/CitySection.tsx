@@ -55,22 +55,22 @@ export default function CitySection(props: CitySectionProps) {
   const [partnerName, setPartnerName] = useState('');
 
   const handleBuyElixir = (elixir: any, stat: string) => {
-    if ((props.resources.gold || 0) >= elixir.price) {
-      props.setResources({ ...props.resources, gold: (props.resources.gold || 0) - elixir.price });
+    if ((props.resources.silver || 0) >= elixir.price) {
+      props.setResources({ ...props.resources, silver: (props.resources.silver || 0) - elixir.price });
       props.setBuffStats({ ...props.buffStats, [stat]: props.buffStats[stat] + elixir.bonus });
       alert(`Вы купили ${elixir.name} и увеличили ${stat} на ${elixir.bonus}!`);
     } else {
-      alert('Недостаточно золота!');
+      alert('Недостаточно серебра!');
     }
   };
 
   const handleBuyItem = (item: any) => {
-    if ((props.resources.gold || 0) >= item.price) {
-      props.setResources({ ...props.resources, gold: (props.resources.gold || 0) - item.price });
+    if ((props.resources.silver || 0) >= item.price) {
+      props.setResources({ ...props.resources, silver: (props.resources.silver || 0) - item.price });
       props.setInventory([...props.inventory, item]);
       alert(`Вы купили ${item.name}!`);
     } else {
-      alert('Недостаточно золота!');
+      alert('Недостаточно серебра!');
     }
   };
 
@@ -186,7 +186,7 @@ export default function CitySection(props: CitySectionProps) {
                       </button>
                     ))}
                   </div>
-                  <span className="text-xs font-bold text-yellow-400 flex items-center gap-1"><Coins className="w-3 h-3"/> {elixir.price}</span>
+                  <span className="text-xs font-bold text-slate-300 flex items-center gap-1"><Coins className="w-3 h-3"/> {elixir.price}</span>
                 </div>
               ))}
             </div>
@@ -220,7 +220,7 @@ export default function CitySection(props: CitySectionProps) {
                     <span className="text-sm font-bold text-white">{item.name}</span>
                     <span className="text-[10px] text-white/40 uppercase">Ур. {item.level} | Статы: ~{item.stats.str}</span>
                   </div>
-                  <button onClick={() => handleBuyItem(item)} className="px-4 py-2 bg-yellow-500/20 text-yellow-400 rounded-xl text-xs font-bold uppercase flex items-center gap-1 hover:bg-yellow-500/30">
+                  <button onClick={() => handleBuyItem(item)} className="px-4 py-2 bg-slate-300/20 text-slate-300 rounded-xl text-xs font-bold uppercase flex items-center gap-1 hover:bg-slate-300/30">
                     <Coins className="w-3 h-3"/> {item.price}
                   </button>
                 </div>

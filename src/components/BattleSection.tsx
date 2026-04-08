@@ -41,7 +41,7 @@ const BOSS_NAMES = ["Король Лич", "Древний Дракон", "По�
 
 interface BattleSectionProps {
   userLevel: number;
-  onVictory: (rewards: { xp: number, copper: number, silver: number, iron: number, items: Item[] }) => void;
+  onVictory: (rewards: { xp: number, silver: number, gold: number, diamonds: number, items: Item[] }) => void;
   key?: string;
   location?: string;
 }
@@ -54,7 +54,7 @@ export default function BattleSection({ userLevel, onVictory, location }: Battle
   const [turn, setTurn] = useState(0);
   const [winner, setWinner] = useState<number | null>(null);
   const [searchProgress, setSearchProgress] = useState(0);
-  const [battleRewards, setBattleRewards] = useState<{ xp: number, copper: number, silver: number, iron: number, items: Item[] } | null>(null);
+  const [battleRewards, setBattleRewards] = useState<{ xp: number, silver: number, gold: number, diamonds: number, items: Item[] } | null>(null);
 
   // Simulated Leaderboard
   const LEADERBOARD = [
@@ -272,10 +272,9 @@ export default function BattleSection({ userLevel, onVictory, location }: Battle
         // Give rewards based on level and tier
         const tier = getBattleTier(userLevel);
         const xp = tier.xp;
-        const copper = 0; // Replaced by silver/gold in higher tiers, but kept for compatibility if needed. Let's give some random copper.
         const silver = tier.silver;
-        const iron = tier.iron;
         const gold = tier.gold;
+        const diamonds = tier.diamonds;
         
         let items: Item[] = [];
         if (userLevel <= 10 && Math.random() > 0.5) {
@@ -288,7 +287,7 @@ export default function BattleSection({ userLevel, onVictory, location }: Battle
           items.push(beginnerItems[Math.floor(Math.random() * beginnerItems.length)]);
         }
         
-        const rewards = { xp, copper: Math.floor(Math.random() * 50), silver, iron, items };
+        const rewards = { xp, silver, gold, diamonds, items };
         setBattleRewards(rewards);
         onVictory(rewards);
       } else {
@@ -528,7 +527,7 @@ export default function BattleSection({ userLevel, onVictory, location }: Battle
                 <div className="relative flex flex-col gap-1 text-xs text-white/60 uppercase tracking-widest mt-2 p-4 bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-bright-line-scan" />
                   <p className="text-yellow-400 font-bold">Получено опыта: +{battleRewards.xp}%</p>
-                  <p>Медь: {battleRewards.copper} | Серебро: {battleRewards.silver} | Железо: {battleRewards.iron}</p>
+                  <p>Серебро: {battleRewards.silver} | Золото: {battleRewards.gold} | Алмазы: {battleRewards.diamonds}</p>
                   {battleRewards.items.length > 0 && (
                     <p className="text-emerald-400 mt-1">Найдено: {battleRewards.items.map(i => i.name).join(', ')}</p>
                   )}

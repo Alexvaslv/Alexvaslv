@@ -155,12 +155,9 @@ export default function AdminPanel({ onAddResources, onSetLevel, onHardReset, cu
             </div>
           </div>
           <div className="grid grid-cols-3 gap-2">
-            <button onClick={() => onAddResources('copper', moneyAmount)} className="flex items-center justify-center gap-2 p-2 rounded-lg bg-orange-700/10 border border-orange-700/20 hover:bg-orange-700/20 text-orange-700"><Coins className="w-4 h-4" /></button>
             <button onClick={() => onAddResources('silver', moneyAmount)} className="flex items-center justify-center gap-2 p-2 rounded-lg bg-slate-300/10 border border-slate-300/20 hover:bg-slate-300/20 text-slate-300"><Coins className="w-4 h-4" /></button>
             <button onClick={() => onAddResources('gold', moneyAmount)} className="flex items-center justify-center gap-2 p-2 rounded-lg bg-yellow-500/10 border border-yellow-500/20 hover:bg-yellow-500/20 text-yellow-500"><Coins className="w-4 h-4" /></button>
             <button onClick={() => onAddResources('diamonds', moneyAmount)} className="flex items-center justify-center gap-2 p-2 rounded-lg bg-cyan-400/10 border border-cyan-400/20 hover:bg-cyan-400/20 text-cyan-400"><Diamond className="w-4 h-4" /></button>
-            <button onClick={() => onAddResources('iron', moneyAmount)} className="flex items-center justify-center gap-2 p-2 rounded-lg bg-slate-600/10 border border-slate-600/20 hover:bg-slate-600/20 text-slate-600"><Box className="w-4 h-4" /></button>
-            <button onClick={() => onAddResources('gems', moneyAmount)} className="flex items-center justify-center gap-2 p-2 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/20 hover:bg-fuchsia-500/20 text-fuchsia-500"><Gem className="w-4 h-4" /></button>
           </div>
         </div>
       </div>

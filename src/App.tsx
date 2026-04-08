@@ -177,12 +177,9 @@ export default function App() {
 
   // Resources state
   const [resources, setResources] = useState<Record<string, number>>({
-    copper: 100,
     silver: 50,
     gold: 10,
-    diamonds: 5,
-    iron: 20,
-    gems: 2
+    diamonds: 5
   });
 
   // Player Stats
@@ -206,19 +203,22 @@ export default function App() {
         
         // Initial check if document exists
         try {
+          console.log("Attempting getDoc...");
           const userDoc = await getDoc(userDocRef);
+          console.log("getDoc successful. Exists:", userDoc.exists());
           if (!userDoc.exists()) {
+            console.log("Document does not exist. Attempting setDoc...");
             // Create initial document if it doesn't exist
             const initialData = {
               uid: user.uid,
               email: user.email || "",
               username: user.displayName || "Герой",
-              playerId: Math.floor(10000 + Math.random() * 90000).toString(),
+              playerId: Math.floor(1000000000 + Math.random() * 9000000000).toString(),
               level: 1,
               xp: 0,
               hp: 100,
               clanName: "Новичок",
-              resources: { copper: 100, silver: 50, gold: 10, diamonds: 5, iron: 20, gems: 2 },
+              resources: { silver: 50, gold: 10, diamonds: 5 },
               backpackItems: [],
               equippedItems: {
                 helmet: null, armor: null, bracers: null, weapon: null, belt: null,
@@ -230,12 +230,14 @@ export default function App() {
               blessing: { active: false, expiresAt: null },
               mailMessages: [],
               isAccountHidden: false,
-              isAdmin: user.email === "alexeivasilev27081994@gmail.com",
+              isAdmin: user.email === "alexeivasilev27081994@gmail.com" && Boolean(user.emailVerified),
               isTutorial: true,
               graphicsSettings: { bloom: true, ambientOcclusion: true, shadowQuality: 'medium' },
               updatedAt: Date.now()
             };
+            console.log("initialData:", initialData);
             await setDoc(userDocRef, initialData);
+            console.log("setDoc successful.");
           }
         } catch (error: any) {
           console.error("Initial Firestore check error:", error);
@@ -364,12 +366,9 @@ export default function App() {
       setClanName("Новичок");
       setUsername(user.displayName || "Герой");
       setResources({
-        copper: 0,
         silver: 0,
         gold: 0,
-        diamonds: 0,
-        iron: 0,
-        gems: 0
+        diamonds: 0
       });
       setIsTutorial(true);
     } catch (error) {
@@ -438,11 +437,9 @@ export default function App() {
     setMailMessages(prev => prev.map(msg => {
       if (msg.id === id && !msg.giftClaimed) {
         // Give gifts
-        addResources('copper', 1000);
         addResources('silver', 500);
         addResources('gold', 50);
         addResources('diamonds', 100);
-        addResources('gems', 10);
         return { ...msg, giftClaimed: true };
       }
       return msg;
@@ -477,11 +474,11 @@ export default function App() {
     }
   };
 
-  const handleBattleVictory = (rewards: { xp: number, copper: number, silver: number, iron: number, items: Item[] }) => {
+  const handleBattleVictory = (rewards: { xp: number, silver: number, gold: number, diamonds: number, items: Item[] }) => {
     addXp(rewards.xp);
-    addResources('copper', rewards.copper);
     addResources('silver', rewards.silver);
-    addResources('iron', rewards.iron);
+    addResources('gold', rewards.gold);
+    addResources('diamonds', rewards.diamonds);
     if (rewards.items.length > 0) {
       setBackpackItems(prev => [...prev, ...rewards.items]);
     }
@@ -544,7 +541,7 @@ export default function App() {
       try {
         const usersSnapshot = await getDocs(collection(db, "users"));
         const updatePromises = usersSnapshot.docs.map(docSnapshot => {
-          const newId = Math.floor(10000 + Math.random() * 90000).toString();
+          const newId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
           return updateDoc(doc(db, "users", docSnapshot.id), { playerId: newId });
         });
         await Promise.all(updatePromises);
@@ -601,10 +598,9 @@ export default function App() {
 
   const handleDismantle = (item: Item) => {
     setBackpackItems(bp => bp.filter(i => i.id !== item.id));
-    addResources('iron', 5);
-    addResources('copper', 10);
+    addResources('silver', 10);
     setSelectedItem(null);
-    alert(`Вы разобрали ${item.name} и получили 5 железа и 10 меди.`);
+    alert(`Вы разобрали ${item.name} и получили 10 серебра.`);
   };
 
   const handleDiscard = (item: Item) => {
@@ -855,15 +851,12 @@ export default function App() {
         {Object.entries(resources).map(([name, amount]) => (
           <div key={name} className="flex items-center gap-2 group cursor-pointer" onClick={() => alert(`${name}: ${formatNumber(amount as number)}`)}>
             <div className="p-1.5 rounded-full bg-white/5 border border-white/10">
-              {name === 'copper' && <Coins className="w-4 h-4 text-orange-700" />}
               {name === 'silver' && <Coins className="w-4 h-4 text-slate-300" />}
               {name === 'gold' && <Coins className="w-4 h-4 text-yellow-500" />}
               {name === 'diamonds' && <Diamond className="w-4 h-4 text-cyan-400" />}
-              {name === 'iron' && <Box className="w-4 h-4 text-slate-600" />}
-              {name === 'gems' && <Gem className="w-4 h-4 text-fuchsia-500" />}
-              {!['copper', 'silver', 'gold', 'diamonds', 'iron', 'gems'].includes(name) && <Coins className="w-4 h-4 text-white/40" />}
+              {!['silver', 'gold', 'diamonds'].includes(name) && <Coins className="w-4 h-4 text-white/40" />}
             </div>
-            <span className="text-xs font-black text-white group-hover:text-yellow-400 transition-all tracking-tight">???</span>
+            <span className="text-xs font-black text-white group-hover:text-yellow-400 transition-all tracking-tight">{formatNumber(amount as number)}</span>
           </div>
         ))}
       </div>
@@ -1256,14 +1249,9 @@ export default function App() {
                     {/* Backpack Items Grid */}
                     <div className="grid grid-cols-5 gap-2 min-h-[120px]">
                       {(() => {
-                        let openSlots = 20;
-                        if (level >= 10) openSlots += 16;
-                        if (level >= 20) openSlots += 16;
-                        if (level >= 30) openSlots += 16;
-                        if (level >= 40) openSlots += 16;
-                        if (level >= 45) openSlots += 16;
-                        const totalSlots = 100;
-                        const closedSlots = totalSlots - openSlots;
+                        const openSlots = 20;
+                        const totalSlots = 20;
+                        const closedSlots = 0;
                         
                         // Filter items by active tab
                         const filteredItems = backpackItems.filter(item => {

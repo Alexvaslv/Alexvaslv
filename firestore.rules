@@ -45,7 +45,7 @@ service cloud.firestore {
     function isAdmin() {
       return isAuthenticated() &&
         ((exists(/databases/$(database)/documents/users/$(request.auth.uid)) && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true) ||
-          (request.auth.token.email == "alexeivasilev27081994@gmail.com" && request.auth.token.email_verified == true));
+          ("email" in request.auth.token && request.auth.token.email == "alexeivasilev27081994@gmail.com" && "email_verified" in request.auth.token && request.auth.token.email_verified == true));
     }
 
     function isValidUser(data) {
@@ -53,8 +53,8 @@ service cloud.firestore {
              data.uid is string &&
              data.email is string &&
              data.username is string && data.username.size() > 0 && data.username.size() < 50 &&
-             data.playerId is string && data.playerId.size() == 10 &&
-             data.level is number && data.level >= 1 && data.level <= 50 &&
+             data.playerId is string && data.playerId.size() >= 5 && data.playerId.size() <= 10 &&
+             data.level is number && data.level >= 1 &&
              data.xp is number && data.xp >= 0 &&
              data.hp is number && data.hp >= 0 &&
              data.clanName is string &&
@@ -69,10 +69,7 @@ service cloud.firestore {
              data.isAccountHidden is bool &&
              data.isAdmin is bool &&
              data.isTutorial is bool &&
-             (!('graphicsSettings' in data) || (data.graphicsSettings is map &&
-               data.graphicsSettings.bloom is bool &&
-               data.graphicsSettings.ambientOcclusion is bool &&
-               data.graphicsSettings.shadowQuality in ['low', 'medium', 'high'])) &&
+             (!('graphicsSettings' in data) || data.graphicsSettings is map) &&
              data.updatedAt is number;
     }
 
