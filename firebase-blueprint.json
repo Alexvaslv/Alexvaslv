@@ -1,0 +1,70 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Player profile and progress data",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "description": "User email" },
+        "username": { "type": "string", "description": "In-game name" },
+        "playerId": { "type": "string", "description": "Unique 10-digit player ID" },
+        "level": { "type": "integer", "description": "Current level" },
+        "xp": { "type": "integer", "description": "Current experience points" },
+        "hp": { "type": "integer", "description": "Current health points" },
+        "clanName": { "type": "string", "description": "Current clan name" },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "copper": { "type": "integer" },
+            "silver": { "type": "integer" },
+            "gold": { "type": "integer" },
+            "diamonds": { "type": "integer" },
+            "iron": { "type": "integer" },
+            "gems": { "type": "integer" }
+          }
+        },
+        "backpackItems": { "type": "array", "items": { "type": "object" } },
+        "equippedItems": { "type": "object" },
+        "bankAccount": {
+          "type": "object",
+          "properties": {
+            "isOpen": { "type": "boolean" },
+            "pin": { "type": "string" },
+            "balance": { "type": "integer" },
+            "loan": { "type": "integer" }
+          }
+        },
+        "currentCity": { "type": "string" },
+        "injuries": { "type": "integer" },
+        "blessing": {
+          "type": "object",
+          "properties": {
+            "active": { "type": "boolean" },
+            "expiresAt": { "type": "integer" }
+          }
+        },
+        "mailMessages": { "type": "array", "items": { "type": "object" } },
+        "isAccountHidden": { "type": "boolean" },
+        "isAdmin": { "type": "boolean" },
+        "isTutorial": { "type": "boolean" },
+        "graphicsSettings": {
+          "type": "object",
+          "properties": {
+            "bloom": { "type": "boolean" },
+            "ambientOcclusion": { "type": "boolean" },
+            "shadowQuality": { "type": "string", "enum": ["low", "medium", "high"] }
+          }
+        },
+        "updatedAt": { "type": "integer", "description": "Last update timestamp" }
+      },
+      "required": ["uid", "email", "username", "playerId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles collection"
+    }
+  }
+}

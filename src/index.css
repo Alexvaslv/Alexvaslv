@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-gray-950 text-gray-100;
+  }
+}
+
+@layer utilities {
+  @keyframes gradient-x {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .animate-gradient-x {
+    animation: gradient-x 3s ease infinite;
+    background-size: 200% 200%;
+  }
+
+  @keyframes text-shine {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  .animate-text-shine {
+    animation: text-shine 2s linear infinite;
+    background-size: 200% auto;
+  }
+
+  @keyframes fire-glow {
+    0%, 100% { text-shadow: 0 0 10px #ef4444, 0 0 20px #f97316, 0 0 30px #eab308; }
+    50% { text-shadow: 0 0 20px #ef4444, 0 0 30px #f97316, 0 0 40px #eab308; }
+  }
+  .animate-fire-glow {
+    animation: fire-glow 1.5s ease-in-out infinite;
+  }
+
+  @keyframes rainbow-glow {
+    0% { filter: hue-rotate(0deg); text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+    50% { filter: hue-rotate(180deg); text-shadow: 0 0 20px rgba(255,255,255,0.8); }
+    100% { filter: hue-rotate(360deg); text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+  }
+  .animate-rainbow-glow {
+    animation: rainbow-glow 3s linear infinite;
+    background-size: 200% 200%;
+  }
+
+  @keyframes float-subtle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+  .animate-float-subtle {
+    animation: float-subtle 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% { filter: drop-shadow(0 0 5px currentColor); }
+    50% { filter: drop-shadow(0 0 15px currentColor); }
+  }
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes bright-line-scan {
+    0% { transform: translateX(-100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(100%); opacity: 0; }
+  }
+  .animate-bright-line-scan {
+    animation: bright-line-scan 2s linear infinite;
+  }
+
+  @keyframes level-up-flash {
+    0% { opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0; }
+  }
+  .animate-level-up-flash {
+    animation: level-up-flash 1s ease-out forwards;
+  }
+
+  @keyframes level-up-glow {
+    0%, 100% { box-shadow: 0 0 0px rgba(255, 215, 0, 0); }
+    50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+  }
+  .animate-level-up-glow {
+    animation: level-up-glow 1s ease-in-out;
+  }
+}
